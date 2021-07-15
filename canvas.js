@@ -1,4 +1,8 @@
-const scl = 10;
+const
+    scl = 10,
+    noiseIncXY = 0.005,
+    noiseIncZ = 0.005,
+    noiseScale = 0.002;
 let canvas, grid, cols, rows;
 let xOff = 0,
     yOff = 0.6,
@@ -19,7 +23,7 @@ function setup() {
     const mainNodeDOM = canvas.parent();
     canvas.parent("canvas-container");
     mainNodeDOM.remove();
-    noiseDetail(10);
+    noiseDetail(10, 0.5);
 
     cols = 2 + (width / scl);
     rows = 2 + (height / scl);
@@ -27,12 +31,8 @@ function setup() {
     grid = new Array(cols);
     for (let i = 0; i < cols; i++) {
         grid[i] = [];
-        xOff += 0.01;
         for (let j = 0; j < rows; j++) {
-            yOff += 0.01;
-            let n = noise(xOff, yOff);
-            let nVal = n > 0.5 ? 1 : 0;
-            grid[i][j] = nVal;
+            grid[i][j] = random(1);
         }
     }
 }
@@ -40,14 +40,15 @@ function setup() {
 function draw() {
     background(120);
 
-    forSpotInGrid(grid, ({ i, j, x, y }) => {
+    forSpotInGrid(grid, ({ i, j, x, y, n }) => {
         const middles = getMiddles(x, y);
         const state = getState(i, j);
         stroke(255);
         strokeWeight(1);
         drawContourBasedOnState(state, middles);
-        stroke(grid[i][j] * 255);
-        strokeWeight(5);
+        stroke(constrain(n * 255, 120, 255));
+        // stroke(grid[i][j] * 255);
+        strokeWeight(6);
         point(x, y);
     });
 }
@@ -97,19 +98,20 @@ function getMiddles(x, y) {
 }
 
 function forSpotInGrid(grid, action) {
-    xOff = 0;
+    // xOff = 0;
     for (let i = 0; i < grid.length - 1; i++) {
-        xOff += 0.01;
-        yOff = 0.6;
+        // xOff += noiseIncXY;
+        // yOff = 0.6;
         for (let j = 0; j < grid[i].length - 1; j++) {
-            let n = noise(xOff, yOff, zOff);
-            let nVal = n > 0.5 ? 1 : 0;
-            grid[i][j] = nVal;
             const x = i * scl;
             const y = j * scl;
-            action({ i, j, x, y });
-            yOff += 0.01;
+            // let n = noise(xOff * noiseScale, yOff * noiseScale, zOff);
+            let n = noise((mouseX + x) * noiseScale, (mouseY + y) * noiseScale, zOff);
+            let nVal = n > 0.5 ? 1 : 0;
+            grid[i][j] = nVal;
+            action({ i, j, x, y, n });
+            // yOff += noiseIncXY;
         }
     }
-    zOff += 0.002
+    zOff += noiseIncZ
 }
