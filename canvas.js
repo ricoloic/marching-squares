@@ -1,6 +1,8 @@
 const scl = 10;
 let canvas, grid, cols, rows;
-let xOff = 0, yOff = 0.6, zOff = 0;
+let xOff = 0,
+    yOff = 0.6,
+    zOff = 0;
 
 function getSize() {
     const widthToRemove = window.innerWidth % scl;
@@ -13,11 +15,11 @@ function getSize() {
 
 function setup() {
     const { w, h } = getSize();
-    canvas = createCanvas(w, h);
+    canvas = createCanvas(w, h, P2D);
     const mainNodeDOM = canvas.parent();
     canvas.parent("canvas-container");
     mainNodeDOM.remove();
-    noiseDetail(50, 0.5);
+    noiseDetail(10);
 
     cols = 2 + (width / scl);
     rows = 2 + (height / scl);
@@ -52,6 +54,7 @@ function draw() {
 
 function drawContourBasedOnState(state, middles) {
     const { mt, mr, mb, ml } = middles;
+
     function vLine(v1, v2) {
         line(v1.x, v1.y, v2.x, v2.y);
     }
