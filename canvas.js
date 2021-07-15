@@ -17,7 +17,7 @@ function setup() {
     const mainNodeDOM = canvas.parent();
     canvas.parent("canvas-container");
     mainNodeDOM.remove();
-    noiseDetail(3, 0.5);
+    noiseDetail(50, 0.5);
 
     cols = 2 + (width / scl);
     rows = 2 + (height / scl);
@@ -56,22 +56,22 @@ function drawContourBasedOnState(state, middles) {
         line(v1.x, v1.y, v2.x, v2.y);
     }
 
-    if (state == 1 || state == 14) //
+    if (state == 1 || state == 14)
         vLine(ml, mb);
-    else if (state == 2 || state == 13) //
+    else if (state == 2 || state == 13)
         vLine(mb, mr);
-    else if (state == 3 || state == 12) //
+    else if (state == 3 || state == 12)
         vLine(ml, mr);
-    else if (state == 4 || state == 11) //
+    else if (state == 4 || state == 11)
         vLine(mt, mr);
-    else if (state == 6 || state == 9) //
+    else if (state == 6 || state == 9)
         vLine(mt, mb);
     else if (state == 7 || state == 8)
         vLine(ml, mt);
-    else if (state == 10) { //
+    else if (state == 10) {
         vLine(mt, mr);
         vLine(mb, ml);
-    } else if (state == 5) { //
+    } else if (state == 5) {
         vLine(mt, ml);
         vLine(mb, mr);
     }
