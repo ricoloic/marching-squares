@@ -98,19 +98,14 @@ function getMiddles(x, y) {
 }
 
 function forSpotInGrid(grid, action) {
-    // xOff = 0;
     for (let i = 0; i < grid.length - 1; i++) {
-        // xOff += noiseIncXY;
-        // yOff = 0.6;
         for (let j = 0; j < grid[i].length - 1; j++) {
             const x = i * scl;
             const y = j * scl;
-            // let n = noise(xOff * noiseScale, yOff * noiseScale, zOff);
             let n = noise((mouseX + x) * noiseScale, (mouseY + y) * noiseScale, zOff);
             let nVal = n > 0.5 ? 1 : 0;
             grid[i][j] = nVal;
             action({ i, j, x, y, n });
-            // yOff += noiseIncXY;
         }
     }
     zOff += noiseIncZ
